@@ -1,0 +1,45 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "email": "admin@bmespaco.com",
+      "password": "admin123",
+      "role": "admin"
+    }
+  ],
+  "clients": [
+    {
+      "id": "1",
+      "name": "Carlos Henrique",
+      "email": "carlos@email.com",
+      "password": "123",
+      "phone": "(53) 99999-9999",
+      "birthDate": "20/04/1990",
+      "address": "Rua Fictícia, 123 - Pelotas, RS",
+      "emergencyContact": "(53) 88888-8888",
+      "medicalHistory": "Histórico de testes."
+    }
+  ],
+  "appointments": [
+    {
+      "id": "1",
+      "clientId": 1,
+      "date": "2025-09-28",
+      "time": "14:30",
+      "type": "Fisioterapia",
+      "doctor": "Dr. João Silva",
+      "status": "Cancelado",
+      "notes": ""
+    },
+    {
+      "id": "2",
+      "clientId": 1,
+      "date": "2025-09-20",
+      "time": "09:00",
+      "type": "RPG",
+      "doctor": "Dra. Maria Santos",
+      "status": "Concluído",
+      "notes": "Sessão focada em fortalecimento dos músculos das costas."
+    }
+  ]
+}
