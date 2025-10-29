@@ -15,9 +15,19 @@
       "password": "123",
       "phone": "(53) 99999-9999",
       "birthDate": "20/04/1990",
-      "address": "Rua Fictícia, 123 - Pelotas, RS",
+      "address": "Rua Fictícia, 123 - Pelotas",
       "emergencyContact": "(53) 88888-8888",
       "medicalHistory": "Histórico de testes."
+    },
+    {
+      "id": "6f6e",
+      "name": "Bruna",
+      "email": "bruna@email.com",
+      "password": "Bruna-049",
+      "phone": "(53) 98152-7678",
+      "birthDate": "18/02/2001",
+      "address": "Av. Cidade de Lisboa",
+      "observations": ""
     }
   ],
   "appointments": [

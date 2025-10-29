@@ -1,9 +1,10 @@
 import { api } from '@/services/auth';
 import { Ionicons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Link, router } from 'expo-router';
-import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Animated, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
@@ -21,6 +22,25 @@ export default function ClientLogin() {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const { handleError } = useErrorHandler();
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
 
   const handleLogin = async () => {
     // Validar formulário
@@ -59,97 +79,155 @@ export default function ClientLogin() {
 
   return (
     <>
-      <SafeAreaView style={{ 
-        flex: 1, 
-        backgroundColor: theme.semantic.background.secondary 
-      }}>
-        <View style={{ 
-          flex: 1, 
-          padding: theme.spacing[6],
-          justifyContent: 'center'
-        }}>
-          {/* Header Card */}
-          <Card 
-            variant="elevated" 
-            padding="xl" 
-            style={{ marginBottom: theme.spacing[8] }}
-          >
-            <View style={{ alignItems: 'center' }}>
-              <View style={{ 
-                backgroundColor: theme.colors.secondary[50],
-                padding: theme.spacing[4],
-                borderRadius: theme.borderRadius.full,
-                marginBottom: theme.spacing[4]
-              }}>
-                <Ionicons 
-                  name="person-circle" 
-                  size={48} 
-                  color={theme.colors.secondary[500]} 
+      <View style={{ flex: 1 }}>
+        {/* Background Gradient */}
+        <LinearGradient
+          colors={['#22c55e', '#16a34a', '#059669']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            top: 0,
+            height: '100%',
+          }}
+        />
+
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={{ 
+            flex: 1, 
+            padding: theme.spacing[6],
+            justifyContent: 'center'
+          }}>
+            {/* Header Card com animação */}
+            <Animated.View
+              style={{
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+                marginBottom: theme.spacing[8],
+              }}
+            >
+              <Card 
+                variant="glass" 
+                padding="xl" 
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                <View style={{ alignItems: 'center' }}>
+                  <View style={{ 
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    padding: theme.spacing[5],
+                    borderRadius: theme.borderRadius.full,
+                    marginBottom: theme.spacing[4],
+                  }}>
+                    <LinearGradient
+                      colors={['#22c55e', '#16a34a']}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={{
+                        padding: theme.spacing[4],
+                        borderRadius: theme.borderRadius.full,
+                      }}
+                    >
+                      <Ionicons 
+                        name="person-circle" 
+                        size={48} 
+                        color={theme.colors.white} 
+                      />
+                    </LinearGradient>
+                  </View>
+                  <Text style={{
+                    fontSize: theme.typography.fontSize['3xl'],
+                    fontWeight: '800' as any,
+                    color: theme.semantic.text.primary,
+                    textAlign: 'center',
+                    marginBottom: theme.spacing[2]
+                  }}>
+                    Área do Cliente
+                  </Text>
+                  <Text style={{
+                    fontSize: theme.typography.fontSize.base,
+                    color: theme.semantic.text.secondary,
+                    textAlign: 'center'
+                  }}>
+                    Acesse sua conta para agendar consultas
+                  </Text>
+                </View>
+              </Card>
+            </Animated.View>
+
+            {/* Form Card com animação */}
+            <Animated.View
+              style={{
+                opacity: fadeAnim,
+                transform: [{ translateY: slideAnim }],
+              }}
+            >
+              <Card 
+                variant="glass" 
+                padding="xl"
+                style={{ 
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                <CustomInput
+                  label="Email"
+                  type="email"
+                  placeholder="seu@email.com"
+                  value={email}
+                  onChangeText={setEmail}
+                  error={errors.email}
+                  required
                 />
-              </View>
-              <Text style={{
-                fontSize: theme.typography.fontSize['3xl'],
-                fontWeight: '700' as any,
-                color: theme.semantic.text.primary,
-                textAlign: 'center',
-                marginBottom: theme.spacing[2]
-              }}>
-                Área do Cliente
-              </Text>
-              <Text style={{
-                fontSize: theme.typography.fontSize.base,
-                color: theme.semantic.text.secondary,
-                textAlign: 'center'
-              }}>
-                Acesse sua conta para agendar consultas
-              </Text>
-            </View>
-          </Card>
 
-          {/* Form Card */}
-          <Card variant="elevated" padding="lg">
-            <CustomInput
-              label="Email"
-              type="email"
-              placeholder="seu@email.com"
-              value={email}
-              onChangeText={setEmail}
-              error={errors.email}
-              required
-            />
+                <CustomInput
+                  label="Senha"
+                  type="password"
+                  placeholder="Digite sua senha"
+                  value={password}
+                  onChangeText={setPassword}
+                  error={errors.password}
+                  required
+                />
 
-            <CustomInput
-              label="Senha"
-              type="password"
-              placeholder="Digite sua senha"
-              value={password}
-              onChangeText={setPassword}
-              error={errors.password}
-              required
-            />
-
-            <CustomButton
-              title={isLoading ? 'Entrando...' : 'Entrar'}
-              onPress={handleLogin}
-              disabled={isLoading}
-              loading={isLoading}
-              size="large"
-              variant="secondary"
-              style={{ marginBottom: theme.spacing[4] }}
-            />
-
-            <View style={{ alignItems: 'center' }}>
-              <Link href="/selection" asChild>
                 <CustomButton
-                  title="Voltar à seleção de área"
-                  variant="ghost"
-                  onPress={() => {}}
+                  title={isLoading ? 'Entrando...' : 'Entrar'}
+                  onPress={handleLogin}
+                  disabled={isLoading}
+                  loading={isLoading}
+                  variant="gradient"
+                  gradient={['#22c55e', '#16a34a']}
+                  size="large"
+                  icon="arrow-forward"
+                  style={{ 
+                    marginBottom: theme.spacing[4],
+                    shadowColor: '#22c55e',
+                    shadowOffset: { width: 0, height: 6 },
+                    shadowOpacity: 0.4,
+                    shadowRadius: 12,
+                    elevation: 8,
+                  }}
                 />
-              </Link>
-            </View>
-          </Card>
-        </View>
-      </SafeAreaView>
+
+                <View style={{ alignItems: 'center' }}>
+                  <Link href="/selection" asChild>
+                    <CustomButton
+                      title="Voltar à seleção"
+                      variant="ghost"
+                      icon="arrow-back"
+                      onPress={() => {}}
+                    />
+                  </Link>
+                </View>
+              </Card>
+            </Animated.View>
+          </View>
+        </SafeAreaView>
+      </View>
       <Toast />
     </>
   );

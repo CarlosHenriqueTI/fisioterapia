@@ -1,17 +1,19 @@
 import { theme } from '@/theme';
 import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useRef } from 'react';
+import { ActivityIndicator, Animated, Text, TouchableOpacity, TouchableOpacityProps, View } from 'react-native';
 
 interface ButtonProps extends TouchableOpacityProps {
   title?: string;
   onPress: () => void;
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'gradient';
   size?: 'small' | 'medium' | 'large';
   disabled?: boolean;
   loading?: boolean;
   icon?: string;
   children?: React.ReactNode;
+  gradient?: readonly [string, string, ...string[]];
 }
 
 export function CustomButton({ 
@@ -25,8 +27,27 @@ export function CustomButton({
   style,
   children,
   testID,
+  gradient = ['#0ea5e9', '#3b82f6'] as const,
   ...rest 
 }: ButtonProps) {
+  
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 0.96,
+      useNativeDriver: true,
+      friction: 3,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scaleAnim, {
+      toValue: 1,
+      useNativeDriver: true,
+      friction: 3,
+    }).start();
+  };
   
   const getButtonStyle = () => {
     const baseStyle = {
@@ -34,9 +55,7 @@ export function CustomButton({
       alignItems: 'center' as const,
       justifyContent: 'center' as const,
       borderRadius: theme.borderRadius.xl,
-      ...theme.shadows.sm,
-      // Animação suave
-      transform: disabled ? [{ scale: 0.98 }] : [{ scale: 1 }],
+      overflow: 'hidden' as const,
     };
 
     const sizeStyles = {
@@ -48,12 +67,12 @@ export function CustomButton({
       medium: {
         paddingHorizontal: theme.spacing[5],
         paddingVertical: theme.spacing[3],
-        minHeight: 44,
+        minHeight: 48,
       },
       large: {
         paddingHorizontal: theme.spacing[6],
         paddingVertical: theme.spacing[4],
-        minHeight: 52,
+        minHeight: 56,
       },
     };
 
@@ -62,17 +81,15 @@ export function CustomButton({
         backgroundColor: disabled 
           ? theme.colors.gray[300] 
           : theme.colors.primary[500],
-        ...(!disabled && theme.shadows.colored.primary),
       },
       secondary: {
         backgroundColor: disabled 
           ? theme.colors.gray[300] 
           : theme.colors.secondary[500],
-        ...(!disabled && theme.shadows.colored.success),
       },
       outline: {
         backgroundColor: 'transparent',
-        borderWidth: 1.5,
+        borderWidth: 2,
         borderColor: disabled 
           ? theme.colors.gray[300] 
           : theme.colors.primary[500],
@@ -82,13 +99,15 @@ export function CustomButton({
           ? theme.colors.gray[100] 
           : theme.colors.primary[50],
       },
+      gradient: {
+        backgroundColor: 'transparent',
+      },
     };
 
     return {
       ...baseStyle,
       ...sizeStyles[size],
       ...variantStyles[variant],
-      ...(style as object),
     };
   };
 
@@ -111,23 +130,27 @@ export function CustomButton({
     const variantStyles = {
       primary: {
         color: theme.colors.white,
-        fontWeight: theme.typography.fontWeight.semibold as any,
+        fontWeight: theme.typography.fontWeight.bold as any,
       },
       secondary: {
         color: theme.colors.white,
-        fontWeight: theme.typography.fontWeight.semibold as any,
+        fontWeight: theme.typography.fontWeight.bold as any,
       },
       outline: {
         color: disabled 
           ? theme.colors.gray[400] 
           : theme.colors.primary[600],
-        fontWeight: theme.typography.fontWeight.medium as any,
+        fontWeight: theme.typography.fontWeight.semibold as any,
       },
       ghost: {
         color: disabled 
           ? theme.colors.gray[400] 
           : theme.colors.primary[600],
-        fontWeight: theme.typography.fontWeight.medium as any,
+        fontWeight: theme.typography.fontWeight.semibold as any,
+      },
+      gradient: {
+        color: theme.colors.white,
+        fontWeight: theme.typography.fontWeight.bold as any,
       },
     };
 
@@ -137,21 +160,15 @@ export function CustomButton({
     };
   };
 
-  const iconSize = size === 'small' ? 18 : size === 'large' ? 26 : 22;
-  const iconColor = variant === 'primary' || variant === 'secondary' 
+  const iconSize = size === 'small' ? 18 : size === 'large' ? 28 : 22;
+  const iconColor = variant === 'primary' || variant === 'secondary' || variant === 'gradient'
     ? theme.colors.white
     : disabled 
       ? theme.colors.gray[400]
       : theme.colors.primary[600];
 
-  return (
-    <TouchableOpacity 
-      style={getButtonStyle()}
-      onPress={onPress}
-      disabled={disabled || loading}
-      testID={testID}
-      {...rest}
-    >
+  const buttonContent = (
+    <>
       {loading ? (
         <ActivityIndicator 
           size="small" 
@@ -175,6 +192,46 @@ export function CustomButton({
           {children}
         </View>
       )}
-    </TouchableOpacity>
+    </>
+  );
+
+  if (variant === 'gradient' && !disabled) {
+    return (
+      <Animated.View style={[{ transform: [{ scale: scaleAnim }] }, style]}>
+        <TouchableOpacity
+          onPress={onPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
+          disabled={disabled || loading}
+          testID={testID}
+          {...rest}
+        >
+          <LinearGradient
+            colors={gradient}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={getButtonStyle()}
+          >
+            {buttonContent}
+          </LinearGradient>
+        </TouchableOpacity>
+      </Animated.View>
+    );
+  }
+
+  return (
+    <Animated.View style={[{ transform: [{ scale: scaleAnim }] }, style]}>
+      <TouchableOpacity 
+        style={getButtonStyle()}
+        onPress={onPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        disabled={disabled || loading}
+        testID={testID}
+        {...rest}
+      >
+        {buttonContent}
+      </TouchableOpacity>
+    </Animated.View>
   );
 }

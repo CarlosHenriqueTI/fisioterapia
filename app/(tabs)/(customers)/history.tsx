@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -91,58 +92,59 @@ export default function History() {
   return (
     <SafeAreaView style={{ 
       flex: 1, 
-      backgroundColor: theme.semantic.background.secondary 
+      backgroundColor: '#f8fafc'
     }}>
       <ScrollView 
-        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: theme.spacing[6] }}
+        contentContainerStyle={{ paddingBottom: 80 }}
       >
-        {/* Header */}
-        <Card 
-          variant="elevated" 
-          padding="xl"
-          style={{ 
-            margin: theme.spacing[6], 
-            marginBottom: theme.spacing[4] 
+        {/* Header com Gradiente */}
+        <LinearGradient
+          colors={['#3b82f6', '#2563eb']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            paddingHorizontal: theme.spacing[4],
+            paddingTop: theme.spacing[4],
+            paddingBottom: theme.spacing[8],
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
           }}
         >
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing[4] }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xl,
+                fontWeight: '800' as any,
+                color: theme.colors.white,
+              }}>
+                Histórico
+              </Text>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xs,
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginTop: theme.spacing[1],
+              }}>
+                Suas consultas anteriores
+              </Text>
+            </View>
             <View style={{
-              backgroundColor: theme.colors.primary[50],
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
               padding: theme.spacing[3],
               borderRadius: theme.borderRadius.full,
-              marginBottom: theme.spacing[3]
             }}>
-              <Ionicons 
-                name="library" 
-                size={32} 
-                color={theme.colors.primary[500]} 
-              />
+              <Ionicons name="time" size={32} color={theme.colors.white} />
             </View>
-            <Text style={{
-              fontSize: theme.typography.fontSize['3xl'],
-              fontWeight: '800' as any,
-              color: theme.semantic.text.primary,
-              textAlign: 'center'
-            }}>
-              Histórico
-            </Text>
-            <Text style={{
-              fontSize: theme.typography.fontSize.base,
-              color: theme.semantic.text.secondary,
-              textAlign: 'center',
-              marginTop: theme.spacing[1]
-            }}>
-              Suas consultas anteriores
-            </Text>
           </View>
-        </Card>
+        </LinearGradient>
 
-        <View style={{ paddingHorizontal: theme.spacing[6] }}>
+        <View style={{ paddingHorizontal: theme.spacing[4], paddingVertical: theme.spacing[4], marginTop: theme.spacing[4] }}>
           {/* Loading State */}
           {isLoading && (
-            <Card variant="outlined" padding="xl" style={{ marginBottom: theme.spacing[4] }}>
+            <Card variant="outlined" padding="xl" style={{ 
+              marginBottom: theme.spacing[4],
+              borderRadius: theme.borderRadius.xl,
+            }}>
               <LoadingSpinner size="large" color={theme.colors.primary[500]} />
               <Text style={{
                 textAlign: 'center',
@@ -160,12 +162,20 @@ export default function History() {
               <View style={{ 
                 flexDirection: 'row', 
                 gap: theme.spacing[3], 
-                marginBottom: theme.spacing[6] 
+                marginBottom: theme.spacing[4] 
               }}>
                 <Card 
                   variant="elevated"
                   padding="md"
-                  style={{ flex: 1 }}
+                  style={{ 
+                    flex: 1,
+                    borderRadius: theme.borderRadius.xl,
+                    shadowColor: '#10b981',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 8,
+                    elevation: 4,
+                  }}
                 >
                   <View style={{ alignItems: 'center' }}>
                     <View style={{
@@ -200,7 +210,15 @@ export default function History() {
                 <Card 
                   variant="elevated"
                   padding="md"
-                  style={{ flex: 1 }}
+                  style={{ 
+                    flex: 1,
+                    borderRadius: theme.borderRadius.xl,
+                    shadowColor: '#ef4444',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 8,
+                    elevation: 4,
+                  }}
                 >
                   <View style={{ alignItems: 'center' }}>
                     <View style={{
@@ -235,7 +253,15 @@ export default function History() {
                 <Card 
                   variant="elevated"
                   padding="md"
-                  style={{ flex: 1 }}
+                  style={{ 
+                    flex: 1,
+                    borderRadius: theme.borderRadius.xl,
+                    shadowColor: '#f59e0b',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.2,
+                    shadowRadius: 8,
+                    elevation: 4,
+                  }}
                 >
                   <View style={{ alignItems: 'center' }}>
                     <View style={{
@@ -279,7 +305,7 @@ export default function History() {
               </Text>
 
               {appointments.length === 0 ? (
-                <Card variant="outlined" padding="xl">
+                <Card variant="outlined" padding="xl" style={{ borderRadius: theme.borderRadius.xl }}>
                   <View style={{ alignItems: 'center' }}>
                     <Ionicons 
                       name="document-outline" 

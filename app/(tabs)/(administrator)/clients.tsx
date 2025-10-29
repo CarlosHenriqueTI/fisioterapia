@@ -1,5 +1,6 @@
 import { api } from '@/services/auth';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
@@ -34,7 +35,7 @@ export default function ClientsPage() {
     }
   };
 
-  // 6. useFocusEffect para recarregar os dados sempre que a tela receber foco
+  // useFocusEffect para recarregar os dados sempre que a tela receber foco
   useFocusEffect(
     useCallback(() => {
       fetchClients();
@@ -49,50 +50,53 @@ export default function ClientsPage() {
   return (
     <SafeAreaView style={{ 
       flex: 1, 
-      backgroundColor: theme.semantic.background.secondary 
+      backgroundColor: '#f8fafc'
     }}>
-      {/* Header */}
-      <Card 
-        variant="elevated" 
-        padding="xl" 
-        style={{ 
-          margin: theme.spacing[6], 
-          marginBottom: theme.spacing[4] 
-        }}
+      <ScrollView 
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 80 }}
       >
-        <View style={{ alignItems: 'center' }}>
-          <View style={{
-            backgroundColor: theme.colors.primary[50],
-            padding: theme.spacing[3],
-            borderRadius: theme.borderRadius.full,
-            marginBottom: theme.spacing[3]
-          }}>
-            <Ionicons 
-              name="people" 
-              size={32} 
-              color={theme.colors.primary[500]} 
-            />
+        {/* Header com Gradiente */}
+        <LinearGradient
+          colors={['#10b981', '#059669']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            paddingHorizontal: theme.spacing[4],
+            paddingTop: theme.spacing[4],
+            paddingBottom: theme.spacing[8],
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
+          }}
+        >
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing[4] }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xl,
+                fontWeight: '800' as any,
+                color: theme.colors.white,
+              }}>
+                Clientes
+              </Text>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xs,
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginTop: theme.spacing[1],
+              }}>
+                Gerenciar cadastros
+              </Text>
+            </View>
+            <View style={{
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
+              padding: theme.spacing[3],
+              borderRadius: theme.borderRadius.full,
+            }}>
+              <Ionicons name="people" size={32} color={theme.colors.white} />
+            </View>
           </View>
-          <Text style={{
-            fontSize: theme.typography.fontSize['3xl'],
-            fontWeight: '800' as any,
-            color: theme.semantic.text.primary,
-            textAlign: 'center'
-          }}>
-            Clientes
-          </Text>
-          <Text style={{
-            fontSize: theme.typography.fontSize.base,
-            color: theme.semantic.text.secondary,
-            textAlign: 'center',
-            marginTop: theme.spacing[1]
-          }}>
-            Gerenciar clientes cadastrados
-          </Text>
-        </View>
-      </Card>
+        </LinearGradient>
 
-      <View style={{ padding: theme.spacing[6], paddingTop: 0, flex: 1 }}>
+        <View style={{ paddingHorizontal: theme.spacing[4], paddingVertical: theme.spacing[4], marginTop: theme.spacing[4], flex: 1 }}>
         {/* Search Bar */}
         <CustomInput
           placeholder="Buscar clientes..."
@@ -114,21 +118,23 @@ export default function ClientsPage() {
 
         {/* Loading State */}
         {isLoading ? (
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <LoadingSpinner size="large" />
-            <Text style={{
-              fontSize: theme.typography.fontSize.base,
-              color: theme.semantic.text.secondary,
-              marginTop: theme.spacing[4]
-            }}>
-              Carregando clientes...
-            </Text>
-          </View>
+          <Card variant="outlined" padding="xl" style={{ borderRadius: theme.borderRadius.xl }}>
+            <View style={{ alignItems: 'center' }}>
+              <LoadingSpinner size="large" />
+              <Text style={{
+                fontSize: theme.typography.fontSize.base,
+                color: theme.semantic.text.secondary,
+                marginTop: theme.spacing[4]
+              }}>
+                Carregando clientes...
+              </Text>
+            </View>
+          </Card>
         ) : (
           /* Clients List */
-          <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+          <View style={{ flex: 1 }}>
             {filteredClients.length === 0 ? (
-              <Card variant="outlined" padding="xl">
+              <Card variant="outlined" padding="xl" style={{ borderRadius: theme.borderRadius.xl }}>
                 <View style={{ alignItems: 'center' }}>
                   <Ionicons 
                     name="people-outline" 
@@ -151,7 +157,17 @@ export default function ClientsPage() {
                   key={client.id}
                   variant="elevated"
                   padding="lg"
-                  style={{ marginBottom: theme.spacing[4] }}
+                  style={{ 
+                    marginBottom: theme.spacing[4],
+                    borderRadius: theme.borderRadius.xl,
+                    borderLeftWidth: 4,
+                    borderLeftColor: theme.colors.secondary[500],
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.1,
+                    shadowRadius: 8,
+                    elevation: 3,
+                  }}
                 >
                   <View style={{ 
                     flexDirection: 'row', 
@@ -245,9 +261,10 @@ export default function ClientsPage() {
                 </Card>
               ))
             )}
-          </ScrollView>
+          </View>
         )}
       </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }

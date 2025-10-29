@@ -10,7 +10,7 @@ const getApiBaseUrl = () => {
   
   // Para dispositivos móveis, use o IP da sua máquina local
   // Você pode descobrir o IP com: ipconfig (Windows) ou ifconfig (Mac/Linux)
-  const LOCAL_IP = '192.168.8.26'; // ⚠️ ATUALIZE COM SEU IP LOCAL
+  const LOCAL_IP = '192.168.8.50'; // ✅ IP atualizado da sua máquina
   
   return `http://${LOCAL_IP}:3000`;
 };

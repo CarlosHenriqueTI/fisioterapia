@@ -1,5 +1,6 @@
 import { api } from '@/services/auth';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -77,61 +78,64 @@ export default function RegisterClientPage() {
   return (
     <SafeAreaView style={{ 
       flex: 1, 
-      backgroundColor: theme.semantic.background.secondary 
+      backgroundColor: '#f8fafc'
     }}>
       <ScrollView 
-        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: theme.spacing[6] }}
+        contentContainerStyle={{ paddingBottom: 80 }}
       >
-        {/* Header */}
-        <Card 
-          variant="elevated" 
-          padding="xl" 
-          style={{ 
-            margin: theme.spacing[6], 
-            marginBottom: theme.spacing[4] 
+        {/* Header com Gradiente */}
+        <LinearGradient
+          colors={['#8b5cf6', '#7c3aed']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            paddingHorizontal: theme.spacing[4],
+            paddingTop: theme.spacing[4],
+            paddingBottom: theme.spacing[8],
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
           }}
         >
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing[4] }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xl,
+                fontWeight: '800' as any,
+                color: theme.colors.white,
+              }}>
+                Cadastrar Cliente
+              </Text>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xs,
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginTop: theme.spacing[1],
+              }}>
+                Preencha os dados
+              </Text>
+            </View>
             <View style={{
-              backgroundColor: theme.colors.secondary[50],
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
               padding: theme.spacing[3],
               borderRadius: theme.borderRadius.full,
-              marginBottom: theme.spacing[3]
             }}>
-              <Ionicons 
-                name="person-add" 
-                size={32} 
-                color={theme.colors.secondary[500]} 
-              />
+              <Ionicons name="person-add" size={32} color={theme.colors.white} />
             </View>
-            <Text style={{
-              fontSize: theme.typography.fontSize['3xl'],
-              fontWeight: '800' as any,
-              color: theme.semantic.text.primary,
-              textAlign: 'center'
-            }}>
-              Cadastrar Cliente
-            </Text>
-            <Text style={{
-              fontSize: theme.typography.fontSize.base,
-              color: theme.semantic.text.secondary,
-              textAlign: 'center',
-              marginTop: theme.spacing[1]
-            }}>
-              Preencha os dados do novo cliente
-            </Text>
           </View>
-        </Card>
+        </LinearGradient>
 
         {/* Form */}
+        <View style={{ paddingHorizontal: theme.spacing[4], paddingVertical: theme.spacing[4], marginTop: theme.spacing[4] }}>
         <Card 
           variant="elevated" 
           padding="lg"
           style={{ 
-            margin: theme.spacing[6], 
-            marginTop: 0 
+            borderRadius: theme.borderRadius.xl,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+            elevation: 3,
           }}
         >
           <Text style={{
@@ -235,6 +239,7 @@ export default function RegisterClientPage() {
             style={{ marginTop: theme.spacing[4] }}
           />
         </Card>
+        </View>
       </ScrollView>
       <Toast />
     </SafeAreaView>

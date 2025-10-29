@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Alert, ScrollView, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -127,57 +128,63 @@ export default function CustomerProfile() {
   return (
     <SafeAreaView style={{ 
       flex: 1, 
-      backgroundColor: theme.semantic.background.secondary 
+      backgroundColor: '#f8fafc'
     }}>
       <ScrollView 
-        style={{ flex: 1 }}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: theme.spacing[6] }}
+        contentContainerStyle={{ paddingBottom: 80 }}
       >
-        {/* Header */}
-        <Card 
-          variant="elevated" 
-          padding="xl"
-          style={{ 
-            margin: theme.spacing[6], 
-            marginBottom: theme.spacing[4] 
+        {/* Header com Gradiente */}
+        <LinearGradient
+          colors={['#8b5cf6', '#7c3aed']}
+          start={{ x: 0, y: 0 }}
+          end={{ x: 1, y: 1 }}
+          style={{
+            paddingHorizontal: theme.spacing[4],
+            paddingTop: theme.spacing[4],
+            paddingBottom: theme.spacing[8],
+            borderBottomLeftRadius: 30,
+            borderBottomRightRadius: 30,
           }}
         >
-          <View style={{ alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing[4] }}>
+            <View style={{ flex: 1 }}>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xl,
+                fontWeight: '800' as any,
+                color: theme.colors.white,
+              }}>
+                Meu Perfil
+              </Text>
+              <Text style={{
+                fontSize: theme.typography.fontSize.xs,
+                color: 'rgba(255, 255, 255, 0.9)',
+                marginTop: theme.spacing[1],
+              }}>
+                Gerencie suas informações
+              </Text>
+            </View>
             <View style={{
-              backgroundColor: theme.colors.accent[50],
+              backgroundColor: 'rgba(255, 255, 255, 0.2)',
               padding: theme.spacing[3],
               borderRadius: theme.borderRadius.full,
-              marginBottom: theme.spacing[3]
             }}>
-              <Ionicons 
-                name="person" 
-                size={32} 
-                color={theme.colors.accent[500]} 
-              />
+              <Ionicons name="person" size={32} color={theme.colors.white} />
             </View>
-            <Text style={{
-              fontSize: theme.typography.fontSize['3xl'],
-              fontWeight: '800' as any,
-              color: theme.semantic.text.primary,
-              textAlign: 'center'
-            }}>
-              Meu Perfil
-            </Text>
-            <Text style={{
-              fontSize: theme.typography.fontSize.base,
-              color: theme.semantic.text.secondary,
-              textAlign: 'center',
-              marginTop: theme.spacing[1]
-            }}>
-              Gerencie suas informações pessoais
-            </Text>
           </View>
-        </Card>
+        </LinearGradient>
 
-        <View style={{ paddingHorizontal: theme.spacing[6] }}>
+        <View style={{ paddingHorizontal: theme.spacing[4], paddingVertical: theme.spacing[4], marginTop: theme.spacing[4] }}>
           {/* Profile Form */}
-          <Card variant="elevated" padding="lg" style={{ marginBottom: theme.spacing[4] }}>
+          <Card variant="elevated" padding="lg" style={{ 
+            marginBottom: theme.spacing[4],
+            borderRadius: theme.borderRadius.xl,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+            elevation: 3,
+          }}>
             <View style={{ 
               flexDirection: 'row', 
               justifyContent: 'space-between', 
@@ -284,15 +291,31 @@ export default function CustomerProfile() {
           </Card>
 
           {/* Account Actions */}
-          <Card variant="elevated" padding="lg">
-            <Text style={{
-              fontSize: theme.typography.fontSize.lg,
-              fontWeight: '700' as any,
-              color: theme.semantic.text.primary,
-              marginBottom: theme.spacing[4]
-            }}>
-              Configurações da Conta
-            </Text>
+          <Card variant="elevated" padding="lg" style={{
+            borderRadius: theme.borderRadius.xl,
+            shadowColor: '#000',
+            shadowOffset: { width: 0, height: 2 },
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+            elevation: 3,
+          }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: theme.spacing[4] }}>
+              <View style={{
+                backgroundColor: theme.colors.primary[50],
+                padding: theme.spacing[2],
+                borderRadius: theme.borderRadius.md,
+                marginRight: theme.spacing[2],
+              }}>
+                <Ionicons name="settings" size={20} color={theme.colors.primary[500]} />
+              </View>
+              <Text style={{
+                fontSize: theme.typography.fontSize.lg,
+                fontWeight: '700' as any,
+                color: theme.semantic.text.primary,
+              }}>
+                Configurações da Conta
+              </Text>
+            </View>
 
             <View style={{ gap: theme.spacing[3] }}>
               <View style={{
