@@ -4,15 +4,14 @@ import { Platform } from 'react-native';
 
 // Configuração para json-server rodando com --host 0.0.0.0 --port 3000
 const getApiBaseUrl = () => {
+  // Usando localhost com adb reverse (emulador) ou IP da rede (dispositivo físico)
   if (Platform.OS === 'web') {
     return 'http://localhost:3000';
   }
   
-  // Para dispositivos móveis, use o IP da sua máquina local
-  // Você pode descobrir o IP com: ipconfig (Windows) ou ifconfig (Mac/Linux)
-  const LOCAL_IP = '192.168.8.50'; // ✅ IP atualizado da sua máquina
-  
-  return `http://${LOCAL_IP}:3000`;
+  // Para emulador Android com adb reverse tcp:3000 tcp:3000
+  // Para dispositivo físico, use o IP: 192.168.8.52
+  return 'http://10.0.2.2:3000'; // IP especial do emulador Android que aponta para localhost do PC
 };
 
 export const api = axios.create({
